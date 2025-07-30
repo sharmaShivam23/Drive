@@ -32,12 +32,10 @@ const validateStudentNumber = (studentNumber) => {
 
 exports.signUp = async (req, res) => {
   try {
-    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
+    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
 
-    if(name.type !== " String" || email.type !== "String"  ){
-      return res.status(400).json({success : false , message : "Invalid Input"})
-    }
+   
     
     // Enhanced input validation
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
@@ -48,17 +46,18 @@ exports.signUp = async (req, res) => {
     if (name.length < 3 || name.length > 50) {
       return res.status(400).json({ success: false, message: "Name must be between 3 and 50 characters" });
     }
+    
+    const expectedDomain = "@akgec.ac.in";
 
-    const expectedEmail = `${name}${studentNumber}@akgec.ac.in`;
-
-if (email !== expectedEmail) {
+// Check if email contains student number and ends with @akgec.ac.in
+if (!email.includes(studentNumber) || !email.endsWith(expectedDomain)) {
   return res.status(400).json({
     success: false,
-    message: `Email must be in the format: ${expectedEmail}`
+    message: `Invalid Email`
   });
 }
 
-    // Email validation
+
    
     // Phone number validation
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
@@ -90,7 +89,7 @@ if (email !== expectedEmail) {
           secret: secretKey,
           response: recaptchaValue,
         },
-        timeout: 5000, // 5 second timeout
+        timeout: 5000, 
       });
 
       if (!recaptchaResponse.data.success) {
