@@ -1,49 +1,98 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  name : {
-    type : String,
-    required : true
+// Utility regex
+const NAME_REGEX = /^[a-zA-Z\s]+$/;
+const PHONE_REGEX = /^[6-9]\d{9}$/;
+const STUDENT_NO_REGEX = /^24\d{4,9}$/;
+
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      trim: true,
+      minlength: [3, 'Name must be at least 3 characters long'],
+      maxlength: [50, 'Name cannot exceed 50 characters'],
+      match: [NAME_REGEX, 'Name can only contain letters and spaces']
+    },
+
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    phoneNumber: {
+      type: String, // Changed to string to preserve leading 0s and avoid precision loss
+      required: [true, 'Phone number is required'],
+      validate: {
+        validator: v => PHONE_REGEX.test(v),
+        message: 'Phone number must be a valid 10-digit number starting with 6-9'
+      }
+    },
+
+    studentNumber: {
+      type: String, // Same as above, number type can lose precision
+      required: [true, 'Student number is required'],
+      unique: true,
+      validate: {
+        validator: v => STUDENT_NO_REGEX.test(v),
+        message: 'Student number must be 6 to 12 digits'
+      }
+    },
+
+    branch: {
+      type: String,
+      required: [true, 'Branch is required'],
+      trim: true
+    },
+
+    section: {
+      type: String,
+      required: [true, 'Section is required'],
+      trim: true,
+    },
+
+    gender: {
+      type: String,
+      required: [true, 'Gender is required'],
+    },
+
+    residence: {
+      type: String,
+      required: [true, 'Residence is required'],
+      trim: true
+    },
+
+    registrationDate: {
+      type: Date,
+      default: Date.now
+    },
+
+    lastUpdated: {
+      type: Date,
+      default: Date.now
+    }
   },
-  email : {
-    type : String,
-    required : true,
-  },
-  phoneNumber : {
-    type : Number,
-    required : true
-  },
-  studentNumber : {
-    type : Number,
-    required : true
-  },
-  branch : {
-    type : String,
-    required : true,
-  },
-  section : {
-    type : String,
-    required : true,
-  },
-  gender : {
-    type : String,
-    required : true,
-  },
-  residence : {
-    type : String,
-    required : true,
-  },
-  transactionID : {
-    type : String,
-    default : ""
-    // required : true,
-    
-  },
-  is_paid : {
-    type : String,
-    default : ""
+  {
+    timestamps: true, // Automatically manages createdAt and updatedAt
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
-})
+);
 
-module.exports = mongoose.model("User" , userSchema)
 
+
+userSchema.pre('save', function (next) {
+  this.lastUpdated = Date.now();
+  next();
+});
+userSchema.virtual('fullName').get(function () {
+  return this.name;
+});
+
+
+module.exports = mongoose.model('User', userSchema);

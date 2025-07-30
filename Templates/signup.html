@@ -1,106 +1,125 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212; 
-            color: #e0e0e0; 
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #1e1e1e; 
-            border: 1px solid #333333;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
-        }
-        .content {
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .content h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #90caf9; 
-        }
-        .highlight {
-            color: #ffcc80;
-            font-weight: bold;
-            margin-left: 8px;
-        }
-        .info-box {
-            background-color: #2e2e2e; 
-            border: 1px solid #444444; 
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-        .footer {
-            background-color: #1e1e1e;
-            text-align: center;
-            padding: 10px 20px;
-            font-size: 14px;
-            color: #bdbdbd; 
-        }
-        ul {
-            padding-left: 20px;
-        }
-        ul li {
-            margin-bottom: 10px;
-        }
-        a {
-            color: #90caf9; /* Link color */
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        img{
-            object-fit: cover;
-            height: 40px;
-        }
-        .hi{
-            margin-right: 4px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CCC Recruitment Confirmation</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 650px;
+      margin: 30px auto;
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+    .header {
+      background-color: #232323;
+      padding: 20px;
+      text-align: center;
+    }
+    .header img {
+      height: 50px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      margin: 10px 0;
+      font-size: 24px;
+      color: #90caf9;
+    }
+    .content {
+      padding: 25px;
+    }
+    .content h2 {
+      color: #ffcc80;
+      font-size: 20px;
+      margin-top: 0;
+    }
+    .highlight {
+      color: #bb86fc;
+      font-weight: bold;
+    }
+    .info-box {
+      background-color: #2b2b2b;
+      padding: 18px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #90caf9;
+    }
+    ul {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+    ul li {
+      margin-bottom: 10px;
+    }
+    .footer {
+      background-color: #141414;
+      padding: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+    a {
+      color: #90caf9;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1>Registration Successful!</h1>
-            <!-- <img src="https://res.cloudinary.com/dc0lqom9f/image/upload/v1745753111/CCC_xmnjhs.png" alt="CCC"> -->
-            <p>Hi <span class="highlight">{{ name }}</span>,</p>
-            <p>Congratulations! Your registration for <strong>Nimbus 2.0</strong> is confirmed. 🎉</p>
-            <div class="info-box">
-                <p><strong>Get ready for </strong></p>
-                <ul>
-                    <li><strong>Web Crafting:</strong> HTML, CSS, JavaScript & a hands-on mini project</li>
-                    <li><strong>Next Gen AI:</strong> Basics of Machine Learning with practical examples</li>
-                    <li><strong>Cloud Computing:</strong> Fundamentals and real-world use cases</li>
-                    <li><strong>Git & GitHub:</strong> Version control, collaboration, and commands</li>
-                </ul>
-                </ul>
-            </div>
-            <!-- <p><strong>🌟 Grand Prizes:</strong>Exciting quizes with grand prizes and goodies</p> -->
-            <p><strong>📅 Date:</strong> 13th & 14th May 2025<br>
-               <strong>⏲️ Time:</strong> 10AM - 4PM onwards<br>
-               <strong>📍 Venue:</strong>CSIT Seminar Hall</p>
-            <p>If you have questions, feel free to contact:</p>
-            <ul>
-                <li>Alok Yadav :- 7667134878</li>
-                <li>Utkarsh Tiwari :- 9455234541</li>
-            </ul>
-        </div>
-        <div class="footer">
-            &copy; 2025 Nimbus 2.0 | Organized by Cloud Computing Cell
-        </div>
+  <div class="container">
+    <div class="header">
+      <img src="https://res.cloudinary.com/dc0lqom9f/image/upload/v1745753111/CCC_xmnjhs.png" alt="CCC Logo" />
+      <h1>Welcome to Cloud Computing Cell!</h1>
     </div>
+    <div class="content">
+      <h2>Hi <span class="highlight">{{ name }}</span>,</h2>
+      <p>🎉 Congratulations! You’ve successfully registered for the <strong>Cloud Computing Cell (CCC)</strong> recruitment process.</p>
+      
+      <div class="info-box">
+        <p><strong>What's Next?</strong></p>
+        <ul>
+          <li><strong>Written Assessment:</strong> Basics of cloud, tech knowledge & aptitude</li>
+          <li><strong>Personal Interview:</strong> Understanding your skills & enthusiasm</li>
+          <li><strong>Domain Allocation:</strong> Based on your interest and performance</li>
+        </ul>
+      </div>
+
+      <p><strong>📌 Domains you can join:</strong></p>
+      <ul>
+        <li><strong>Web Development:</strong> Frontend, Backend, Full Stack Projects</li>
+        <li><strong>Cloud & DevOps:</strong> AWS, Docker, CI/CD, Infra Automation</li>
+        <li><strong>AI & ML:</strong> Models, Projects, and Real-time Applications</li>
+        <li><strong>Content & PR:</strong> Event management, social media, blogs</li>
+        <li><strong>Design & Video:</strong> Posters, Reels, Branding</li>
+      </ul>
+
+      <p><strong>📅 Recruitment Dates:</strong> 5th - 10th August 2025<br>
+         <strong>⏲️ Time:</strong> Will be communicated via email/WhatsApp<br>
+         <strong>📍 Venue:</strong> CSIT Block / Online (based on phase)</p>
+
+      <p>We’re thrilled to see your interest and can’t wait to welcome you aboard.</p>
+
+      <p>If you have any queries, contact us:</p>
+      <ul>
+        <li>Alok Yadav – 7667134878</li>
+        <li>Utkarsh Tiwari – 9455234541</li>
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; 2025 Cloud Computing Cell | AKGEC
+    </div>
+  </div>
 </body>
 </html>
