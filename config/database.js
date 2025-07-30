@@ -3,14 +3,14 @@ require('dotenv').config()
 
 const database = () => {
     const options = {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        maxPoolSize: 10,
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
+        maxPoolSize: 15,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
     };
 
-    mongoose.connect(process.env.URL, options)
+    mongoose.connect(process.env.URL , options)
     .then(() => {
        console.log("Successfully connected with database");
     })
