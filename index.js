@@ -120,16 +120,26 @@ app.use("/api/register", routes);
 const database = require('./config/database');
 database();
 
-//  Global error handler
+// //  Global error handler
+// app.use((err, req, res, next) => {
+//   console.error('Global error:', err);
+//   res.status(500).json({
+//     success: false,
+//     message: process.env.NODE_ENV === 'production'
+//       ? 'Internal server error'
+//       : err.message
+//   });
+// });
+
 app.use((err, req, res, next) => {
-  console.error('Global error:', err);
+  console.error('Global Error:', err.stack); // logs full stack
   res.status(500).json({
     success: false,
-    message: process.env.NODE_ENV === 'production'
-      ? 'Internal server error'
-      : err.message
+    message: err.message,
+    stack: err.stack
   });
 });
+
 
 //  Graceful shutdown
 process.on('SIGTERM', () => {
