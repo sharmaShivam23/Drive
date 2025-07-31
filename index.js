@@ -66,30 +66,42 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
-    httpOnly: false,
+    httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'strict'
+    sameSite: 'lax' // Changed from 'strict' to 'lax' for better compatibility
   }
 }));
 
-// CSRF protection (must come after cookieParser and session)
+// CSRF protection configuration
 const csrfProtection = csrf({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    sameSite: 'lax' // Changed from 'strict' to 'lax'
   }
 });
 
 // Public route to get CSRF token (before applying CSRF protection to all routes)
 app.get("/api/get-csrf-token", (req, res) => {
-  const token = req.csrfToken();
-  res.cookie("XSRF-TOKEN", token, {
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: false // Must be accessible from frontend JS
-  });
-  res.status(200).json({ message: "CSRF token sent", csrfToken: token });
+  try {
+    const token = req.csrfToken();
+    res.cookie("XSRF-TOKEN", token, {
+      sameSite: "lax", // Changed from 'strict' to 'lax'
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: false // Must be accessible from frontend JS
+    });
+    res.status(200).json({ 
+      success: true,
+      message: "CSRF token sent", 
+      csrfToken: token 
+    });
+  } catch (error) {
+    console.error('CSRF token generation error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: "Failed to generate CSRF token" 
+    });
+  }
 });
 
 // Apply CSRF protection to all other routes
@@ -124,6 +136,15 @@ database();
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Global error:', err);
+  
+  // Handle CSRF token errors specifically
+  if (err.code === 'EBADCSRFTOKEN') {
+    return res.status(403).json({
+      success: false,
+      message: 'CSRF token validation failed. Please refresh the page and try again.'
+    });
+  }
+  
   res.status(err.status || 500).json({
     success: false,
     message: process.env.NODE_ENV === 'production'
