@@ -195,7 +195,7 @@ app.set('trust proxy', 1);
 // --------------------
 app.use(cors({
   origin: [
-    "https://new-cccc.vercel.app",
+    "https://new-ccc.vercel.app",
     "https://www.cccakgec.live",
     "http://localhost:5173",
     "http://localhost:5174"
