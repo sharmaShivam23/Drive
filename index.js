@@ -292,7 +292,7 @@ app.use((err, req, res, next) => {
     //   ? 'Internal server error'
     //   : err.message,
     // ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
-    message : err.message;
+    message : err.message
   });
 });
 
