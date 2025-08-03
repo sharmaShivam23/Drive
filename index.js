@@ -253,7 +253,8 @@ const csrfProtection = csrf({
     httpOnly: true, //js cant read
     secure: true,   //only for https
     // secure: process.env.NODE_ENV === 'production',   //only for https
-    sameSite: 'strict' 
+    // sameSite: 'strict' 
+     sameSite: 'None'
   }
 });
 // app.get('/csrf-token', csrfProtection, (req, res) => {
