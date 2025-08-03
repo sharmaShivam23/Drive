@@ -277,7 +277,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-const routes = require("./routes/Routes");
+const routes = require("./routes/Routes")
 app.use("/api/register", routes);
 
 
