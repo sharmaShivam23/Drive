@@ -251,7 +251,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 const csrfProtection = csrf({
   cookie: {
     httpOnly: true, //js cant read
-    secure: false,   //only for https
+    secure: true,   //only for https
     // secure: process.env.NODE_ENV === 'production',   //only for https
     sameSite: 'strict' 
   }
