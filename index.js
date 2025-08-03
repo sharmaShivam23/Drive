@@ -183,16 +183,15 @@ const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 require('dotenv').config();
 const path = require("path");
+const csrf = require('csurf');
 
-// Initialize app
+
 const app = express();
 
-// Trust proxy (for secure cookies behind Vercel/Render etc.)
+
 app.set('trust proxy', 1);
 
-// --------------------
-// ✅ CORS Setup
-// --------------------
+
 app.use(cors({
   origin: [
     "https://new-ccc.vercel.app",
@@ -202,14 +201,12 @@ app.use(cors({
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With' , 'X-CSRF-Token'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
   maxAge: 86400,
 }));
 
-// --------------------
-// ✅ Security Headers
-// --------------------
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -227,12 +224,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// --------------------
-// ✅ Middleware
-// --------------------
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(cookieParser(process.env.COOKIE_SECRET || 'your-secret-key'));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-session-secret',
   resave: false,
@@ -246,17 +240,29 @@ app.use(session({
 }));
 app.use(fileUpload({ useTempFiles: true }));
 
-// --------------------
-// ✅ Security Middlewares
-// --------------------
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 app.use(compression());
+app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 
-// --------------------
-// ✅ Health Check
-// --------------------
+//csrf
+// const csrfProtection = csrf({ cookie: true  , secure: true , sameSite: 'strict'});
+const csrfProtection = csrf({
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',  
+    sameSite: 'strict'
+  }
+});
+app.get('/csrf-token', csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() , message : "CSRF token getting successfully" });
+});
+
+app.use(csrfProtection);
+
+
+
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -265,21 +271,13 @@ app.get('/health', (req, res) => {
   });
 });
 
-// --------------------
-// ✅ Main Routes
-// --------------------
 const routes = require("./routes/Routes");
 app.use("/api/register", routes);
 
-// --------------------
-// ✅ DB Connection
-// --------------------
+
 const database = require('./config/database');
 database();
 
-// --------------------
-// ✅ Global Error Handler
-// --------------------
 app.use((err, req, res, next) => {
   console.error('Global error:', err);
   res.status(err.status || 500).json({
@@ -291,9 +289,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// --------------------
-// ✅ Graceful Shutdown
-// --------------------
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
   process.exit(0);
@@ -303,9 +298,6 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// --------------------
-// ✅ Start Server
-// --------------------
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);

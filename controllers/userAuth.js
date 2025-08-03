@@ -117,7 +117,7 @@ exports.signUp = async (req, res) => {
         console.error('Signup template not found');
       } else {
         const signupTemplate = fs.readFileSync(templatePath, 'utf8');
-        const subject = "Welcome to Cloud Computing Cell!";
+        const subject = "Welcome to Testing!";
         const text = `Hi ${name}, Congratulations! Registration successful.`;
         const html = signupTemplate.replace(/{{\s*name\s*}}/g, name);
 
@@ -139,4 +139,4 @@ exports.signUp = async (req, res) => {
       message: "Registration failed. Please try again later.",
     });
   }
-};
+}
