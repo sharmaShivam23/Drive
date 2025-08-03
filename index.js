@@ -250,16 +250,21 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 // const csrfProtection = csrf({ cookie: true  , secure: true , sameSite: 'strict'});
 const csrfProtection = csrf({
   cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',  
-    sameSite: 'strict'
+    httpOnly: true, //js cant read
+    secure: false,   //only for https
+    // secure: process.env.NODE_ENV === 'production',   //only for https
+    sameSite: 'strict' 
   }
 });
-app.get('/csrf-token', csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() , message : "CSRF token getting successfully" });
+// app.get('/csrf-token', csrfProtection, (req, res) => {
+//   res.json({ csrfToken: req.csrfToken() , message : "CSRF token getting successfully" });
+app.use(csrfProtection);
+app.get("/csrf-token", (req, res) => {
+  const token = req.csrfToken();
+  res.cookie("XSRF-TOKEN", token); 
+  res.status(200).json({ message: "get csrf successfully" });
 });
 
-app.use(csrfProtection);
 
 
 
