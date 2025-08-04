@@ -262,7 +262,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 // app.use(csrfProtection);
 
 const csrfProtection = csrf({ cookie: {
-  httpOnly: true,
+  httpOnly: false,
   secure: true, 
   sameSite: "None",
 }
@@ -270,9 +270,15 @@ const csrfProtection = csrf({ cookie: {
 app.use(csrfProtection);
 app.get("/csrf-token", (req, res) => {
   const token = req.csrfToken();
-  res.cookie("XSRF-TOKEN", token); 
-  res.status(200).json({ message: "get csrf successfully" });
+  res.cookie("XSRF-TOKEN", token, {
+    httpOnly: false,
+    secure: true,
+    sameSite: 'None' 
+  });
+  res.status(200).json({ csrfToken: token, message: "CSRF token sent successfully" });
 });
+
+
 
 
 
