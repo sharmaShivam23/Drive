@@ -248,17 +248,25 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 
 //csrf
 // const csrfProtection = csrf({ cookie: true  , secure: true , sameSite: 'strict'});
-const csrfProtection = csrf({
-  cookie: {
-    httpOnly: false, //js cant read
-    secure: true,   //only for https
-    // secure: process.env.NODE_ENV === 'production',   //only for https
-    // sameSite: 'strict' 
-     sameSite: 'None'
-  }
-});
-// app.get('/csrf-token', csrfProtection, (req, res) => {
-//   res.json({ csrfToken: req.csrfToken() , message : "CSRF token getting successfully" });
+// const csrfProtection = csrf({
+//   cookie: {
+//     httpOnly: false, //js cant read
+//     secure: true,   //only for https
+//     // secure: process.env.NODE_ENV === 'production',   //only for https
+//     // sameSite: 'strict' 
+//      sameSite: 'None'
+//   }
+// });
+// // app.get('/csrf-token', csrfProtection, (req, res) => {
+// //   res.json({ csrfToken: req.csrfToken() , message : "CSRF token getting successfully" });
+// app.use(csrfProtection);
+
+const csrfProtection = csrf({ cookie: {
+  httpOnly: true,
+  secure: true, 
+  sameSite: "None",
+}
+ });
 app.use(csrfProtection);
 app.get("/csrf-token", (req, res) => {
   const token = req.csrfToken();
@@ -278,7 +286,7 @@ app.get('/health', (req, res) => {
 });
 
 const routes = require("./routes/Routes");
-app.use("/api/register", routes);
+app.use("/api/register",  csrfProtection,  routes);
 
 
 const database = require('./config/database');
