@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 20, 
+  max: 10, 
   message: {
     success: false,
     message: "Too many registration attempts. Please try again after 15 minutes."
@@ -31,18 +31,15 @@ const validateStudentNumber = (studentNumber) => {
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue } = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , token} = req.body;
 
-   
-  
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
       return res.status(400).json({ success: false, message: "All details are required" });
     }
 
-    // Name validation
-    if (name.length < 3 || name.length > 50) {
-      return res.status(400).json({ success: false, message: "Invalid Name" });
-    }
+   if (name?.length < 3 || name?.length > 50 || !/^[a-zA-Z]+$/.test(name)) {
+  return res.status(400).json({ success: false, message: "Invalid Name" });
+  }
     
     const expectedEnding = `${studentNumber}@akgec.ac.in`;
 
@@ -63,6 +60,10 @@ exports.signUp = async (req, res) => {
     if (!validateStudentNumber(studentNumber)) {
       return res.status(400).json({ success: false, message: "Invalid student number format" });
     }
+
+    if (!token) {
+    return res.status(400).json({ success: false, message: "reCAPTCHA token missing" });
+  }
 
     if (!recaptchaValue) {
       return res.status(400).json({ success: false, message: "reCAPTCHA verification required" });
@@ -97,6 +98,12 @@ exports.signUp = async (req, res) => {
     if (existEmail) {
       return res.status(400).json({ success: false, message: "Email already registered" });
     }
+    
+    const existStudentNumber = await User.findOne({ studentNumber });
+    if (existStudentNumber) {
+      return res.status(400).json({ success: false, message: "Student Number already registered" });
+    }
+
 
     
     const userCreate = await User.create({
@@ -115,7 +122,8 @@ exports.signUp = async (req, res) => {
       const templatePath = path.join(__dirname, '../Templates/signup.html');
       if (!fs.existsSync(templatePath)) {
         console.error('Signup template not found');
-      } else {
+      }
+       else {
         const signupTemplate = fs.readFileSync(templatePath, 'utf8');
         const subject = "Welcome to Testing!";
         const text = `Hi ${name}, Congratulations! Registration successful.`;

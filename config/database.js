@@ -3,11 +3,10 @@ require('dotenv').config()
 
 const database = () => {
     const options = {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
-        maxPoolSize: 15,
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000,
+        maxPoolSize: 50, //maximum number of connections your app can have open to the MongoDB server at one time.
+        serverSelectionTimeoutMS: 5000,//Sets how long (in milliseconds) the MongoDB client should wait when trying to connect to a server before throwing an error
+        socketTimeoutMS: 45000,//This sets how long the socket connection between your app and MongoDB can remain open without activity before timing out.
+        ssl: true,
     };
 
     mongoose.connect(process.env.URL , options)
@@ -19,7 +18,6 @@ const database = () => {
       process.exit(1);
     });
 
-    // Handle connection events
     mongoose.connection.on('error', (err) => {
         console.error('MongoDB connection error:', err);
     });
@@ -28,7 +26,6 @@ const database = () => {
         console.log('MongoDB disconnected');
     });
 
-    // Graceful shutdown
     process.on('SIGINT', async () => {
         await mongoose.connection.close();
         console.log('MongoDB connection closed through app termination');

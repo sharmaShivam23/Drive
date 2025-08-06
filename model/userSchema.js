@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Utility regex
 const NAME_REGEX = /^[a-zA-Z\s]+$/;
 const PHONE_REGEX = /^[6-9]\d{9}$/;
 const STUDENT_NO_REGEX = /^24\d{4,9}$/;
@@ -26,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
 
     phoneNumber: {
-      type: String, // Changed to string to preserve leading 0s and avoid precision loss
+      type: String, 
       required: [true, 'Phone number is required'],
       validate: {
         validator: v => PHONE_REGEX.test(v),
@@ -35,7 +34,7 @@ const userSchema = new mongoose.Schema(
     },
 
     studentNumber: {
-      type: String, // Same as above, number type can lose precision
+      type: String, 
       required: [true, 'Student number is required'],
       unique: true,
       validate: {
@@ -78,7 +77,7 @@ const userSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true, // Automatically manages createdAt and updatedAt
+    timestamps: true, 
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
