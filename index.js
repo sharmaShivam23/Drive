@@ -262,18 +262,18 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 // app.use(csrfProtection);
 
 const csrfProtection = csrf({ cookie: {
-  httpOnly: false,
-  secure: true, 
-  sameSite: "None",
+  httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
 }
  });
 app.use(csrfProtection);
 app.get("/csrf-token", (req, res) => {
   const token = req.csrfToken();
   res.cookie("XSRF-TOKEN", token, {
-    httpOnly: false,
-    secure: true,
-    sameSite: 'None' 
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict', 
   });
   res.status(200).json({ csrfToken: token, message: "CSRF token sent successfully" });
 });
