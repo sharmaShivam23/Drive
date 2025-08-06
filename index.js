@@ -262,9 +262,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 // app.use(csrfProtection);
 
 const csrfProtection = csrf({ cookie: {
-  httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'Strict',
+ httpOnly: false,
+    secure: true,
+    sameSite: 'None' 
 }
  });
 app.use(csrfProtection);
