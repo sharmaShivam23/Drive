@@ -33,10 +33,13 @@ exports.signUp = async (req, res) => {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
     const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue} = req.body;
 
+
+
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
       return res.status(400).json({ success: false, message: "All details are required" });
     }
 
+    
  
  if (!name || name.trim().length < 3 || name.trim().length > 50 || !/^[a-zA-Z\s]+$/.test(name)) {
   return res.status(400).json({ 
@@ -65,9 +68,6 @@ exports.signUp = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid student number format" });
     }
 
-    if (!token) {
-    return res.status(400).json({ success: false, message: "reCAPTCHA token missing" });
-  }
 
     if (!recaptchaValue) {
       return res.status(400).json({ success: false, message: "reCAPTCHA verification required" });
