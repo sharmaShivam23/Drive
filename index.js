@@ -3,14 +3,12 @@ const express = require('express');
 const cors = require("cors");
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-// const fileUpload = require('express-fileupload');
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 require('dotenv').config();
-const path = require("path");
 const csrf = require('csurf');
 
 
@@ -66,7 +64,7 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000,
   }
 }));
-app.use(fileUpload({ useTempFiles: true }));
+
 
 app.use(mongoSanitize());
 app.use(xss());
@@ -88,14 +86,11 @@ app.get("/csrf-token", (req, res) => {
     // secure: true,
     // sameSite: 'None' 
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'Strict',
+   secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
   });
   res.status(200).json({ csrfToken: token, message: "CSRF token sent successfully" });
 });
-
-
-
 
 
 
@@ -122,7 +117,6 @@ app.use((err, req, res, next) => {
       ? 'Internal server error'
       : err.message,
     ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
-    // message : err.message
   });
 });
 

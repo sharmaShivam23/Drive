@@ -31,15 +31,19 @@ const validateStudentNumber = (studentNumber) => {
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue , token} = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue} = req.body;
 
     if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
       return res.status(400).json({ success: false, message: "All details are required" });
     }
 
-   if (name?.length < 3 || name?.length > 50 || !/^[a-zA-Z]+$/.test(name)) {
-  return res.status(400).json({ success: false, message: "Invalid Name" });
-  }
+ 
+ if (!name || name.trim().length < 3 || name.trim().length > 50 || !/^[a-zA-Z\s]+$/.test(name)) {
+  return res.status(400).json({ 
+    success: false, 
+    message: "Invalid Name"
+  });
+}
     
     const expectedEnding = `${studentNumber}@akgec.ac.in`;
 
@@ -118,22 +122,32 @@ exports.signUp = async (req, res) => {
     });
 
   
+   
     try {
-      const templatePath = path.join(__dirname, '../Templates/signup.html');
-      if (!fs.existsSync(templatePath)) {
-        console.error('Signup template not found');
-      }
-       else {
-        const signupTemplate = fs.readFileSync(templatePath, 'utf8');
-        const subject = "Welcome to Testing!";
-        const text = `Hi ${name}, Congratulations! Registration successful.`;
-        const html = signupTemplate.replace(/{{\s*name\s*}}/g, name);
+  const templatePath = path.join(__dirname, '../Templates/signup.html');
+  if (!fs.existsSync(templatePath)) {
+    throw new Error('Signup template not found');
+  }
+  const signupTemplate = fs.readFileSync(templatePath, 'utf8');
+  const subject = "Welcome to Testing!";
+  const text = `Hi ${name}, Congratulations! Registration successful.`;
+  const html = signupTemplate.replace(/{{\s*name\s*}}/g, name);
+  await sendEmail(email, subject, text, html);
+} catch (emailError) {
+  console.error('Email sending error:', {
+    message: emailError.message,
+    stack: emailError.stack,
+  });
+}
+    
+    // const templatePath = path.join(__dirname, '../Templates/signup.html');
 
-        await sendEmail(email, subject, text, html);
-      }
-    } catch (emailError) {
-      console.error('Email sending error:', emailError.message);
-    }
+    // const signupTemplate = fs.readFileSync(templatePath, 'utf8');
+    // const subject = "Welcome to Testing!";
+    // const text = `Hi ${name}, Congratulations! Registration successful.`;
+    // const html  = signupTemplate.replace(/{{\s*name\s*}}/g, name)
+
+    // const isEmailSent = await sendEmail(email, subject, text, html);
 
     res.status(200).json({
       success: true,
