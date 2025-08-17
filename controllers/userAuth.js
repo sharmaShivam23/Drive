@@ -41,7 +41,7 @@ exports.signUp = async (req, res) => {
 
     
  
- if (!name || name.trim().length < 3 || name.trim().length > 50 || !/^[a-zA-Z\s]+$/.test(name)) {
+ if (!name || name.trim().length < 3 || name.trim().length > 20 || !/^[a-zA-Z\s]+$/.test(name)) {
   return res.status(400).json({ 
     success: false, 
     message: "Invalid Name"

@@ -22,8 +22,8 @@ app.use(cors({
   origin: [
     "https://new-ccc.vercel.app",
     "https://www.cccakgec.live",
-    "http://localhost:5173",
-    "http://localhost:5174"
+    // "http://localhost:5173",
+    // "http://localhost:5174"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
