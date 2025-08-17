@@ -73,7 +73,7 @@ app.use(compression());
 app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 
 const csrfProtection = csrf({ cookie: {
-  httpOnly: false,
+  httpOnly: true,
   secure: true, 
   sameSite: "None",
 }
