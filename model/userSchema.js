@@ -65,10 +65,8 @@ const userSchema = new mongoose.Schema(
 },
 
 
-    section: {
+    unstopId: {
       type: String,
-      required: [true, "Section is required"],
-      trim: true,
     },
 
     gender: {

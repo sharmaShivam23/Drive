@@ -31,11 +31,11 @@ const validateStudentNumber = (studentNumber) => {
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, section, gender, residence, recaptchaValue} = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence, recaptchaValue} = req.body;
 
 
 
-    if (!name || !email || !phoneNumber || !studentNumber || !branch || !section || !gender || !residence) {
+    if (!name || !email || !phoneNumber || !studentNumber || !branch  || !gender || !residence) {
       return res.status(400).json({ success: false, message: "All details are required" });
     }
 
@@ -116,7 +116,7 @@ exports.signUp = async (req, res) => {
       phoneNumber,
       studentNumber,
       branch: branch.toUpperCase(),
-      section: section.toUpperCase(),
+      unstopId: unstopId,
       gender: gender.toLowerCase(),
       residence: residence.trim(),
     });
