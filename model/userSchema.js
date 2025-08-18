@@ -64,10 +64,11 @@ const userSchema = new mongoose.Schema(
   },
 },
 
-
     unstopId: {
-      type: String,
-    },
+  type: String,
+  trim: true,
+  match: [/^[a-zA-Z0-9_-]+$/, "Invalid unstopId"], 
+},
 
     gender: {
       type: String,

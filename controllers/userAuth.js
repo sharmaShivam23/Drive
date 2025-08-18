@@ -31,6 +31,7 @@ const validateStudentNumber = (studentNumber) => {
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
+    // const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence} = req.body;
     const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence, recaptchaValue} = req.body;
 
 
@@ -50,7 +51,9 @@ exports.signUp = async (req, res) => {
     
     const expectedEnding = `${studentNumber}@akgec.ac.in`;
 
-    const startsWithAlphabets = /^[a-zA-Z]+/.test(email);
+    // const startsWithAlphabets = /^[a-zA-Z]+/.test(email);
+    const startsWithAlphabets = /^[a-zA-Z]{3,}/.test(email);
+
     
     if (!startsWithAlphabets || !email.endsWith(expectedEnding)) {
       return res.status(400).json({
