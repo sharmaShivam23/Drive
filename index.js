@@ -85,7 +85,7 @@ app.get("/csrf-token", (req, res) => {
     // httpOnly: false,
     // secure: true,
     // sameSite: 'None' 
-    httpOnly: true,
+    httpOnly: false,
    secure: process.env.NODE_ENV === 'production',
   sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
   });
