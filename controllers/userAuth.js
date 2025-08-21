@@ -64,8 +64,18 @@ exports.signUp = async (req, res) => {
     
 
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
-      return res.status(400).json({ success: false, message: "Invalid phone number format" });
+      return res.status(400).json({ success: false, message: "Invalid phone number" });
     }
+
+    if(unstopId){
+   if (!/^[a-zA-Z0-9._]{3,30}$/.test(unstopId)) {
+  return res.status(400).json({ 
+    success: false, 
+    message: "Invalid Unstop ID" 
+  });
+}
+    }
+
 
     if (!validateStudentNumber(studentNumber)) {
       return res.status(400).json({ success: false, message: "Invalid student number format" });

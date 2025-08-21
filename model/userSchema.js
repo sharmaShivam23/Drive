@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema(
     unstopId: {
   type: String,
   trim: true,
-  match: [/^[a-zA-Z0-9_-]+$/, "Invalid unstopId"], 
+   match: [/^[a-zA-Z0-9._]{3,30}$/, "Invalid unstopId"]
 },
 
     gender: {

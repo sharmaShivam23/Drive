@@ -28,14 +28,14 @@ const registrationLimiter = rateLimit({
 // Stricter limiter for suspicious activity
 const strictLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 4, // 20 attempts per 5 minutes
+  max: 4, 
   message: {
     success: false,
     message: "Suspicious activity detected. Please try again later."
   },
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: true,
+  skipSuccessfulRequests: false,
   skipFailedRequests: false,
   keyGenerator: (req) => req.ip,
   handler: (req, res) => {

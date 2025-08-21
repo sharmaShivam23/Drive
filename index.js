@@ -22,8 +22,8 @@ app.use(cors({
   origin: [
     "https://new-ccc.vercel.app",
     "https://www.cccakgec.live",
-    "http://localhost:5173",
-    "http://localhost:5174"
+    // "http://localhost:5173",
+    // "http://localhost:5174"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -72,25 +72,25 @@ app.use(hpp());
 app.use(compression());
 app.use(cookieParser(process.env.COOKIE_SECRET || 'cccckey'));
 
-const csrfProtection = csrf({ cookie: {
-  httpOnly: false,
-  secure: true, 
-  sameSite: "None",
-}
- });
-app.use(csrfProtection);
-app.get("/csrf-token", (req, res) => {
-  const token = req.csrfToken();
-  res.cookie("XSRF-TOKEN", token, {
-    // httpOnly: false,
-    // secure: true,
-    // sameSite: 'None' 
-    httpOnly: false,
-   secure: process.env.NODE_ENV === 'production',
-  sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-  });
-  res.status(200).json({ csrfToken: token, message: "CSRF token sent successfully" });
-});
+// const csrfProtection = csrf({ cookie: {
+//   httpOnly: false,
+//   secure: true, 
+//   sameSite: "None",
+// }
+//  });
+// app.use(csrfProtection);
+// app.get("/csrf-token", (req, res) => {
+//   const token = req.csrfToken();
+//   res.cookie("XSRF-TOKEN", token, {
+//     // httpOnly: false,
+//     // secure: true,
+//     // sameSite: 'None' 
+//     httpOnly: false,
+//    secure: process.env.NODE_ENV === 'production',
+//   sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+//   });
+//   res.status(200).json({ csrfToken: token, message: "CSRF token sent successfully" });
+// });
 
 
 
@@ -103,7 +103,8 @@ app.get('/health', (req, res) => {
 });
 
 const routes = require("./routes/Routes");
-app.use("/api/register",  csrfProtection,  routes);
+app.use("/api/register",   routes);
+// app.use("/api/register",  csrfProtection,  routes);
 
 
 const database = require('./config/database');
