@@ -28,7 +28,7 @@ const registrationLimiter = rateLimit({
 // Stricter limiter for suspicious activity
 const strictLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 4, 
+  max: 1, 
   message: {
     success: false,
     message: "Suspicious activity detected. Please try again later."
