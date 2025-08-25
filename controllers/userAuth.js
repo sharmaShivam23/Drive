@@ -6,18 +6,29 @@ const path = require('path');
 const rateLimit = require('express-rate-limit');
 
 
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, 
+//   max: 10, 
+//   message: {
+//     success: false,
+//     message: "Too many registration attempts. Please try again after 15 minutes."
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   skipSuccessfulRequests: false,
+//   skipFailedRequests: false,
+// });
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 10, 
+  max: 20,
   message: {
     success: false,
     message: "Too many registration attempts. Please try again after 15 minutes."
   },
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: false,
-  skipFailedRequests: false,
 });
+
 exports.limiter = limiter;
 
 const validateStudentNumber = (studentNumber) => {
@@ -31,8 +42,8 @@ const validateStudentNumber = (studentNumber) => {
 exports.signUp = async (req, res) => {
   try {
     // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
-    // const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence} = req.body;
-    const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence, recaptchaValue} = req.body;
+    const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence} = req.body;
+    // const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence, recaptchaValue} = req.body;
 
 
 
@@ -67,14 +78,24 @@ exports.signUp = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid phone number" });
     }
 
+     if(unstopId){
+   if(unstopId.length < 3 || unstopId.length > 25) {
+  return res.status(400).json({ 
+    success: false, 
+    message: "Unstop Id must contain 4 to 20 characters" 
+  });
+}
+     }
+
     if(unstopId){
    if (!/^[a-zA-Z0-9._]{3,30}$/.test(unstopId)) {
   return res.status(400).json({ 
     success: false, 
-    message: "Invalid Unstop ID" 
+    message: "Unstop Id only contains alphabets , numbers , dot and underscore" 
   });
 }
     }
+    
 
 
     if (!validateStudentNumber(studentNumber)) {
@@ -82,34 +103,34 @@ exports.signUp = async (req, res) => {
     }
 
 
-    if (!recaptchaValue) {
-      return res.status(400).json({ success: false, message: "reCAPTCHA verification required" });
-    }
+    // if (!recaptchaValue) {
+    //   return res.status(400).json({ success: false, message: "reCAPTCHA verification required" });
+    // }
 
-    try {
-      const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-      const secretKey = process.env.SECRET_KEY;
+    // try {
+    //   const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+    //   const secretKey = process.env.SECRET_KEY;
       
-      if (!secretKey) {
-        console.error('SECRET_KEY not configured');
-        return res.status(500).json({ success: false, message: "Server configuration error" });
-      }
+    //   if (!secretKey) {
+    //     console.error('SECRET_KEY not configured');
+    //     return res.status(500).json({ success: false, message: "Server configuration error" });
+    //   }
 
-      const recaptchaResponse = await axios.post(verifyUrl, null, {
-        params: {
-          secret: secretKey,
-          response: recaptchaValue,
-        },
-        timeout: 5000, 
-      });
+    //   const recaptchaResponse = await axios.post(verifyUrl, null, {
+    //     params: {
+    //       secret: secretKey,
+    //       response: recaptchaValue,
+    //     },
+    //     timeout: 5000, 
+    //   });
 
-      if (!recaptchaResponse.data.success) {
-        return res.status(400).json({ success: false, message: "reCAPTCHA verification failed" });
-      }
-    } catch (recaptchaError) {
-      console.error('reCAPTCHA verification error:', recaptchaError.message);
-      return res.status(500).json({ success: false, message: "reCAPTCHA verification error" });
-    }
+    //   if (!recaptchaResponse.data.success) {
+    //     return res.status(400).json({ success: false, message: "reCAPTCHA verification failed" });
+    //   }
+    // } catch (recaptchaError) {
+    //   console.error('reCAPTCHA verification error:', recaptchaError.message);
+    //   return res.status(500).json({ success: false, message: "reCAPTCHA verification error" });
+    // }
 
     const existEmail = await User.findOne({ email });
     if (existEmail) {
@@ -136,22 +157,22 @@ exports.signUp = async (req, res) => {
 
   
    
-    try {
-  const templatePath = path.join(__dirname, '../Templates/signup.html');
-  if (!fs.existsSync(templatePath)) {
-    throw new Error('Signup template not found');
-  }
-  const signupTemplate = fs.readFileSync(templatePath, 'utf8');
-  const subject = "Welcome to Testing!";
-  const text = `Hi ${name}, Congratulations! Registration successful.`;
-  const html = signupTemplate.replace(/{{\s*name\s*}}/g, name);
-  await sendEmail(email, subject, text, html);
-} catch (emailError) {
-  console.error('Email sending error:', {
-    message: emailError.message,
-    stack: emailError.stack,
-  });
-}
+//     try {
+//   const templatePath = path.join(__dirname, '../Templates/signup.html');
+//   if (!fs.existsSync(templatePath)) {
+//     throw new Error('Signup template not found');
+//   }
+//   const signupTemplate = fs.readFileSync(templatePath, 'utf8');
+//   const subject = "Welcome to Testing!";
+//   const text = `Hi ${name}, Congratulations! Registration successful.`;
+//   const html = signupTemplate.replace(/{{\s*name\s*}}/g, name);
+//   await sendEmail(email, subject, text, html);
+// } catch (emailError) {
+//   console.error('Email sending error:', {
+//     message: emailError.message,
+//     stack: emailError.stack,
+//   });
+// }
     
     // const templatePath = path.join(__dirname, '../Templates/signup.html');
 

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const NAME_REGEX = /^[a-zA-Z\s]+$/;
 const PHONE_REGEX = /^[6-9]\d{9}$/;
 const STUDENT_NO_REGEX = /^24\d{5,6}$/;
+const MAIL_REGEX = /^[a-zA-Z]{3,20}24\d{5,6}@akgec\.ac\.in$/;
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Email is required"],
       unique: true,
+      match : [MAIL_REGEX , "Invalid Email"],
       trim: true,
     },
 
@@ -84,11 +86,6 @@ const userSchema = new mongoose.Schema(
     },
 
     registrationDate: {
-      type: Date,
-      default: Date.now,
-    },
-
-    lastUpdated: {
       type: Date,
       default: Date.now,
     },
