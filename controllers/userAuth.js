@@ -83,7 +83,7 @@ exports.signUp = async (req, res) => {
    if(unstopId.length < 3 || unstopId.length > 25) {
   return res.status(400).json({ 
     success: false, 
-    message: "Unstop Id must contain 4 to 20 characters" 
+    message: "Unstop Id must contain 3 to 20 characters" 
   });
 }
      }
@@ -147,10 +147,10 @@ exports.signUp = async (req, res) => {
     
     const userCreate = await User.create({
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      email: email.trim(),
       phoneNumber,
       studentNumber,
-      branch: branch.toUpperCase(),
+      branch: branch,
       unstopId: unstopId,
       gender: gender.toLowerCase(),
       residence: residence.trim(),

@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const database = () => {
     const options = {
-        maxPoolSize: 50, //maximum number of connections your app can have open to the MongoDB server at one time.
+        maxPoolSize: 60, //maximum number of connections your app can have open to the MongoDB server at one time.
         serverSelectionTimeoutMS: 5000,//Sets how long (in milliseconds) the MongoDB client should wait when trying to connect to a server before throwing an error
         socketTimeoutMS: 45000,//This sets how long the socket connection between your app and MongoDB can remain open without activity before timing out.
         ssl: true,
