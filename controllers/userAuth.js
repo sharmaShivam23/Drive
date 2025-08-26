@@ -186,7 +186,7 @@ exports.signUp = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Registration successful for NIMBUS 2.0",
+      message: "Registration successful for SPOCC'25",
     });
 
   } catch (error) {
