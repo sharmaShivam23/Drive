@@ -1,8 +1,8 @@
 const User = require('../model/userSchema');
 const sendEmail = require('../Tools/sendEmail');
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 const rateLimit = require('express-rate-limit');
 
 
@@ -21,7 +21,7 @@ const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 30,
+  max: 40,
   message: {
     success: false,
     message: "Too many registration attempts. Please try again after 15 minutes."
@@ -42,7 +42,6 @@ const validateStudentNumber = (studentNumber) => {
 
 exports.signUp = async (req, res) => {
   try {
-    // const { name, email, phoneNumber, studentNumber, branch, section, gender, residence } = req.body;
     // const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence} = req.body;
     const { name, email, phoneNumber, studentNumber, branch, unstopId, gender, residence, recaptchaValue} = req.body;
 
