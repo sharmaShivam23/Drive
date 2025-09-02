@@ -14,11 +14,12 @@
     }
     .container {
       max-width: 650px;
-      margin: 30px auto;
+      margin: 20px auto;
       background-color: #1a1a1a;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
       overflow: hidden;
+      width: 90%;
     }
     .header {
       background-color: #232323;
@@ -26,21 +27,21 @@
       text-align: center;
     }
     .header img {
-      height: 50px;
-      object-fit: contain;
-      margin-bottom: 10px;
+      max-width: 80px;
+      height: auto;
+      margin-bottom: 5px;
     }
     .header h1 {
       margin: 10px 0;
-      font-size: 24px;
+      font-size: 22px;
       color: #90caf9;
     }
     .content {
-      padding: 25px;
+      padding: 20px;
     }
     .content h2 {
       color: #ffcc80;
-      font-size: 20px;
+      font-size: 18px;
       margin-top: 0;
     }
     .highlight {
@@ -49,23 +50,24 @@
     }
     .info-box {
       background-color: #2b2b2b;
-      padding: 18px;
+      padding: 15px;
       border-radius: 8px;
-      margin: 20px 0;
+      margin: 15px 0;
       border-left: 4px solid #90caf9;
     }
     ul {
-      padding-left: 20px;
-      margin-top: 10px;
+      padding-left: 18px;
+      margin: 10px 0;
     }
     ul li {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      line-height: 1.5;
     }
     .footer {
       background-color: #141414;
-      padding: 15px;
+      padding: 12px;
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       color: #aaa;
     }
     a {
@@ -75,50 +77,66 @@
     a:hover {
       text-decoration: underline;
     }
+
+    
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 20px;
+      }
+      .content {
+        padding: 15px;
+      }
+      .content h2 {
+        font-size: 16px;
+      }
+      .info-box {
+        padding: 12px;
+      }
+      ul li {
+        font-size: 14px;
+      }
+      .footer {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <img src="https://res.cloudinary.com/dc0lqom9f/image/upload/v1745753111/CCC_xmnjhs.png" alt="CCC Logo" />
-      <h1>Welcome to Testing!</h1>
+      <h1>Welcome to Cloud Computing Cell</h1>
     </div>
     <div class="content">
       <h2>Hi <span class="highlight">{{ name }}</span>,</h2>
-      <p>🎉 Congratulations! You’ve successfully registered for the <strong>Kuch bhi()</strong> recruitment process.</p>
+      <p>🎉 Congratulations! You’ve successfully registered for the <strong>SPOCC'25</strong> recruitment process.</p>
       
       <div class="info-box">
-        <p><strong>What's Next?</strong></p>
+        <p><strong>⚡ Important Instructions:</strong></p>
         <ul>
-          <li><strong>Written Assessment:</strong> Basics of HTML , CSS ,  cloud, tech knowledge & aptitude</li>
-          <li><strong>Personal Interview:</strong> Understanding your skills & enthusiasm</li>
-          <li><strong>Domain Allocation:</strong> Based on your interest and performance</li>
+          <li>Don’t forget to create your <strong>HackerRank ID</strong> before the coding round.</li>
+          <li>Be prepared for a <strong>Quiz Round</strong> (Tech + Aptitude).</li>
+          <li><strong>Coding Round</strong> will include <strong>5 questions</strong> (basic to intermediate).</li>
+          <li>Carry your College ID card during offline rounds.</li>
         </ul>
       </div>
+      
+      <p><strong>📅 Recruitment Date:</strong> 2nd September 2025<br>
+         <strong>⏲️ Time:</strong> 4:00 PM onwards<br>
+         <strong>📍 Venue:</strong> CSIT Block (3rd floor)</p>
 
-      <p><strong>📌 Domains you can join:</strong></p>
-      <ul>
-        <li><strong>Web Development:</strong> Frontend, Backend, Full Stack Projects</li>
-        <li><strong>Cloud & DevOps:</strong> Cloud Computing , AWS, Docker</li>
-        <li><strong>AI & ML:</strong> Models, Projects, and Real-time Applications</li>
-        <li><strong>Content & PR:</strong> Event management, social media, blogs</li>
-        <li><strong>Design & Video:</strong> Posters, Reels, Branding</li>
+      <p>We’re excited to see your enthusiasm and can’t wait to meet you during the rounds 🚀.</p>
+
+      <p>If you have any queries, feel free to reach out to us:</p>
+      <div class="info-box">
+       <ul>
+        <li>📞 Alok Yadav – 7667134878</li>
+        <li>📞 Harshit Gautam – 8077039513</li>
       </ul>
-
-      <p><strong>📅 Recruitment Dates:</strong> 5th - 10th August 2025<br>
-         <strong>⏲️ Time:</strong> Will be communicated via email/WhatsApp<br>
-         <strong>📍 Venue:</strong> CSIT Block / Online (based on phase)</p>
-
-      <p>We’re thrilled to see your interest and can’t wait to welcome you aboard.</p>
-
-      <p>If you have any queries, contact us:</p>
-      <ul>
-        <!-- <li>Alok Yadav – 7667134878</li>
-        <li>Utkarsh Tiwari – 9455234541</li> -->
-      </ul>
+      </div>
     </div>
     <div class="footer">
-      <!-- &copy; 2025 Cloud Computing Cell | AKGEC -->
+      Cloud Computing Cell | AKGEC
     </div>
   </div>
 </body>

@@ -73,6 +73,7 @@ exports.signUp = async (req, res) => {
       });
     }
     
+   
 
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
       return res.status(400).json({ success: false, message: "Invalid phone number" });
@@ -100,6 +101,10 @@ exports.signUp = async (req, res) => {
 
     if (!validateStudentNumber(studentNumber)) {
       return res.status(400).json({ success: false, message: "Invalid student number format" });
+    }
+
+    if(gender === "female" && residence === "Hosteller"){
+       return res.status(400).json({ success: false, message: "Registration Closed for hosteller girls" });
     }
 
 
