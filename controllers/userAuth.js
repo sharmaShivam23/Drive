@@ -103,7 +103,7 @@ exports.signUp = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid student number format" });
     }
 
-    if(gender == "female" && residence == "Hosteller"){
+    if(gender == "Female" && residence == "Hosteller"){
        return res.status(400).json({ success: false, message: "Registration Closed for hosteller girls" });
     }
 
