@@ -8,9 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
-const bcrypt = require('bcrypt');
 require('dotenv').config();
-const serverless = require("serverless-http");
 // const csrf = require('csurf');
 
 const app = express();
