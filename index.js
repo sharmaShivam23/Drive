@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+const serverless = require("serverless-http");
 // const csrf = require('csurf');
 
 const app = express();
@@ -133,6 +134,16 @@ process.on('SIGINT', () => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+// });
+
+
+if (process.env.VERCEL === "true") {
+    module.exports = app;
+  module.exports.handler = serverless(app);
+  // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+} else {
+  // Running on Vercel → export handler
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
