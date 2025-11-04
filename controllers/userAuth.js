@@ -21,7 +21,7 @@ const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
-  max: 40,
+  max: 30,
   message: {
     success: false,
     message: "Too many registration attempts. Please try again after 15 minutes."
@@ -59,7 +59,11 @@ exports.signUp = async (req, res) => {
     message: "Invalid Name"
   });
 }
-    
+
+
+// const emailFormat = /^[a-z]24/d{5,6}@akgec.ac.in$/
+
+ 
     const expectedEnding = `${studentNumber}@akgec.ac.in`;
 
     // const startsWithAlphabets = /^[a-zA-Z]+/.test(email);
@@ -103,9 +107,9 @@ exports.signUp = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid student number format" });
     }
 
-    if(gender === "female" && residence === "Hosteller"){
-       return res.status(400).json({ success: false, message: "Registration Closed for hosteller girls" });
-    }
+    // if(gender === "female" && residence === "Hosteller"){
+    //    return res.status(400).json({ success: false, message: "Registration Closed for hosteller girls" });
+    // }
 
 
     if (!recaptchaValue) {

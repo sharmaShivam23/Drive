@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 // const csrf = require('csurf');
 
@@ -15,6 +16,7 @@ const app = express();
 
 
 app.set('trust proxy', 1);
+
 
 
 app.use(cors({
