@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const express = require('express');
 const cors = require("cors");
 const session = require('express-session');
@@ -8,7 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
-require('dotenv').config();
+
 // const csrf = require('csurf');
 
 const app = express();
