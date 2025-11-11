@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Node Backend
 on:
   push:
     branches:
-      - main   # Trigger only when pushing to main branch
+      - main  # Trigger only when pushing to main branch
 
 jobs:
   build_and_deploy:
@@ -16,7 +16,7 @@ jobs:
 
       # Step 2: Build Docker image
       - name: Build Docker Image
-        run: docker build -t shivam232006/backend:01 .
+        run: docker build -t shivam232006/backend:latest .
 
       # Step 3: Login to Docker Hub
       - name: Login to Docker Hub
@@ -24,25 +24,26 @@ jobs:
 
       # Step 4: Push image to Docker Hub
       - name: Push Image to Docker Hub
-        run: docker push shivam232006/backend:01
+        run: docker push shivam232006/backend:latest
 
-      # Step 5: Deploy on EC2
+      # Step 5: Deploy on EC2 via SSH
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}   # usually ec2-user for Amazon Linux
-          key: ${{ secrets.EC2_KEY }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script: |
             echo "Pulling latest Docker image..."
-            docker pull shivam232006/backend:01
-            
+            docker pull shivam232006/backend:latest
+
             echo "Stopping old container..."
             docker stop backend || true
             docker rm backend || true
-            
+
             echo "Running new container..."
-            docker run -d --name backend -p 5000:5000 --env-file /home/ec2-user/.env --restart always shivam232006/backend:01
-            
+            docker run -d --name backend -p 5000:5000 --env-file /home/${{ secrets.EC2_USER }}/.env --restart always shivam232006/backend:latest
+
             echo "Cleaning old images..."
             docker image prune -f
