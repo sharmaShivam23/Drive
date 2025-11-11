@@ -123,7 +123,7 @@ app.use((err, req, res, next) => {
 });
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+  console.log('SIGTERM received, shutting down gracefully chng');
   process.exit(0);
 });
 process.on('SIGINT', () => {
@@ -133,6 +133,6 @@ process.on('SIGINT', () => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode chnge`);
 });
 
