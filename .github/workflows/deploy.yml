@@ -51,6 +51,8 @@
 #             sudo docker image prune -f
 
 
+
+
 name: CI/CD Pipeline for Node Backend
 
 on:
@@ -88,10 +90,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            echo "Stopping old container if exists..."
-            if [ $(sudo docker ps -q -f name=backend) ]; then
-                sudo docker stop backend
-                sudo docker rm backend
+            echo "Stopping and removing old container if exists..."
+            if [ $(sudo docker ps -a -q -f name=backend) ]; then
+                sudo docker stop backend || true
+                sudo docker rm backend || true
             fi
 
             echo "Pulling latest Docker image..."
@@ -104,4 +106,4 @@ jobs:
                 shivam232006/backend:latest
 
             echo "Cleaning up dangling images..."
-            sudo docker images -f "dangling=true" -q | xargs -r sudo docker rmi
+            sudo docker images -f "dangling=true" -q | xargs -r sudo docker rmi -f
