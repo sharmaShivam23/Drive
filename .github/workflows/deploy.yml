@@ -1,3 +1,5 @@
+
+
 # name: CI/CD Pipeline for Node Backend
 
 # on:
@@ -26,7 +28,7 @@
 #       - name: Push Image to Docker Hub
 #         run: docker push shivam232006/backend:latest
 
-#       # Step 5: Deploy on EC2 via SSH
+#       # Step 5: Deploy to EC2 via SSH
 #       - name: Deploy to EC2 via SSH
 #         uses: appleboy/ssh-action@v0.1.10
 #         with:
@@ -36,17 +38,18 @@
 #           port: 22
 #           script: |
 #             echo "Pulling latest Docker image..."
-#             docker pull shivam232006/backend:latest
+#             sudo docker pull shivam232006/backend:latest
 
 #             echo "Stopping old container..."
-#             docker stop backend || true
-#             docker rm backend || true
+#             sudo docker stop backend || true
+#             sudo docker rm backend || true
 
 #             echo "Running new container..."
-#             docker run -d --name backend -p 5000:5000 --env-file /home/${{ secrets.EC2_USER }}/.env --restart always shivam232006/backend:latest
+#             sudo docker run -d --name backend -p 5000:5000 --env-file /home/${{ secrets.EC2_USER }}/.env --restart always shivam232006/backend:latest
 
 #             echo "Cleaning old images..."
-#             docker image prune -f
+#             sudo docker image prune -f
+
 
 name: CI/CD Pipeline for Node Backend
 
@@ -85,15 +88,20 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
+            echo "Stopping old container if exists..."
+            if [ $(sudo docker ps -q -f name=backend) ]; then
+                sudo docker stop backend
+                sudo docker rm backend
+            fi
+
             echo "Pulling latest Docker image..."
             sudo docker pull shivam232006/backend:latest
 
-            echo "Stopping old container..."
-            sudo docker stop backend || true
-            sudo docker rm backend || true
-
             echo "Running new container..."
-            sudo docker run -d --name backend -p 5000:5000 --env-file /home/${{ secrets.EC2_USER }}/.env --restart always shivam232006/backend:latest
+            sudo docker run -d --name backend -p 5000:5000 \
+                --env-file /home/${{ secrets.EC2_USER }}/.env \
+                --restart always \
+                shivam232006/backend:latest
 
-            echo "Cleaning old images..."
-            sudo docker image prune -f
+            echo "Cleaning up dangling images..."
+            sudo docker images -f "dangling=true" -q | xargs -r sudo docker rmi
