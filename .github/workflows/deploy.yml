@@ -90,7 +90,13 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            echo "Stopping and removing old container if exists..."
+            echo "Stopping any containers using port 5000..."
+            for cid in $(sudo docker ps -q --filter "publish=5000"); do
+                sudo docker stop $cid || true
+                sudo docker rm $cid || true
+            done
+
+            echo "Stopping and removing old container named backend..."
             if [ $(sudo docker ps -a -q -f name=backend) ]; then
                 sudo docker stop backend || true
                 sudo docker rm backend || true
